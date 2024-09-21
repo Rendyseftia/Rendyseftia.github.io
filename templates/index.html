@@ -144,10 +144,10 @@
         <button onclick="playAudio()">Play Lagu</button>
     </div>
     
-    <audio id="audio" loop>
-        <source src="static/lagu.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+   <audio id="audio" loop>
+    <source src="{{ url_for('static', filename='lagu.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
 
     <!-- Konten utama halaman -->
     <div class="main-content" style="display: none;">
@@ -157,9 +157,9 @@
             <button id="yes-button" onclick="goToThankYou()">Iya</button>
         </div>
         <div class="image-container">
-            <img src="static/gambar1.jpeg" alt="Gambar 1">
-            <img src="static/gambar2.jpeg" alt="Gambar 2">
-            <img src="static/gambar3.jpeg" alt="Gambar 3">
+          <img src="{{ url_for('static', filename='gambar1.jpeg') }}" alt="Gambar 1">
+<img src="{{ url_for('static', filename='gambar2.jpeg') }}" alt="Gambar 2">
+<img src="{{ url_for('static', filename='gambar3.jpeg') }}" alt="Gambar 3">
         </div>
         <!-- Notifikasi -->
         <div class="notification" id="notification">
