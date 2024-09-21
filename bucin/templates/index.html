@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamu Cantik Apa Nggak?</title>
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDN8fGxvdmV8ZW58MHx8fHwxNjg1MDU1NzM3&ixlib=rb-4.0.3&q=80&w=1080');
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+            position: relative;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8); /* Warna putih dengan opacity */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999; /* Pastikan overlay di atas semua konten */
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: black; /* Ubah warna teks menjadi hitam untuk keterbacaan */
+            font-size: 3em; /* Ukuran font terbesar untuk "Kamu cantik" */
+            text-align: center; /* Pusatkan teks */
+        }
+        .button-container {
+            display: flex;
+            justify-content: center; /* Rata tengah tombol */
+            margin-bottom: 40px; /* Jarak antara tombol dan gambar */
+        }
+        button {
+            padding: 20px 40px; /* Ukuran tombol lebih besar */
+            font-size: 1.5em; /* Ukuran font tombol lebih besar */
+            margin: 10px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            background-color: rgba(34, 139, 34, 0.9);
+            color: white;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        .button-red {
+            background-color: red; /* Ubah latar belakang tombol menjadi merah */
+            animation: fire 0.5s forwards; /* Tambahkan animasi berapi */
+        }
+        @keyframes fire {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+                text-shadow: 0 0 20px orange, 0 0 30px red;
+            }
+            100% {
+                transform: scale(1);
+                text-shadow: 0 0 10px red;
+            }
+        }
+        .image-container {
+            display: flex;
+            justify-content: center; /* Rata tengah gambar */
+            margin-top: 40px; /* Jarak antara tombol dan gambar */
+        }
+        img {
+            width: 180px; /* Ukuran gambar lebih besar */
+            margin: 10px; /* Tambahkan margin */
+            border-radius: 10px; /* Sudut gambar melengkung */
+        }
+        .notification {
+            position: relative; /* Ubah ke relative agar bisa ditempatkan di bawah gambar */
+            background: rgba(0, 0, 0, 0.8); /* Latar belakang hitam */
+            color: white; /* Teks putih untuk kontras */
+            padding: 30px; /* Ukuran padding untuk notifikasi */
+            border-radius: 10px;
+            display: none; /* Sembunyikan notifikasi secara default */
+            text-align: center;
+            z-index: 1000; /* Di atas overlay */
+            font-size: 1.5em; /* Ukuran font lebih besar */
+            margin-top: 20px; /* Jarak antara gambar dan notifikasi */
+        }
+        .warning {
+            display: none; /* Sembunyikan peringatan secara default */
+            color: red; /* Warna teks merah */
+            font-size: 2em; /* Ukuran font lebih besar untuk peringatan */
+            text-align: center;
+            margin-top: 20px; /* Jarak atas */
+        }
+    </style>
+    <script>
+        let noButtonClicks = 0; // Hitung jumlah klik tombol "Tidak"
+
+        function playAudio() {
+            const audio = document.getElementById('audio');
+            audio.play();
+            document.getElementById('overlay').style.display = 'none'; // Sembunyikan overlay setelah memutar lagu
+            document.querySelector('.main-content').style.display = 'block'; // Tampilkan konten utama
+            
+            // Tampilkan notifikasi
+            const notification = document.getElementById('notification');
+            notification.style.display = 'block'; // Tampilkan notifikasi
+            setTimeout(() => {
+                notification.style.display = 'none'; // Sembunyikan notifikasi setelah 5 detik
+            }, 5000); // Ubah durasi menjadi 5 detik
+        }
+
+        function goToThankYou() {
+            window.location.href = '/thankyou'; // Arahkan ke halaman terima kasih
+        }
+
+        function moveButton() {
+            noButtonClicks++; // Tambah hitungan klik
+            const noButton = document.getElementById('no-button');
+            noButton.classList.add('button-red'); // Tambahkan kelas untuk efek berapi
+            
+            // Pindahkan tombol
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            noButton.style.position = 'absolute';
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+
+            // Tampilkan peringatan jika klik lebih dari 3 kali
+            if (noButtonClicks > 3) {
+                const warning = document.getElementById('warning');
+                warning.style.display = 'block'; // Tampilkan peringatan
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="overlay" id="overlay">
+        <h1>Untuk masuk, silakan putar lagu ini terlebih dahulu!</h1>
+        <button onclick="playAudio()">Play Lagu</button>
+    </div>
+    
+    <audio id="audio" loop>
+        <source src="{{ url_for('static', filename='lagu.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Konten utama halaman -->
+    <div class="main-content" style="display: none;">
+        <h1>Kamu cantik apa nggak?</h1>
+        <div class="button-container">
+            <button id="no-button" onclick="moveButton()">Tidak</button>
+            <button id="yes-button" onclick="goToThankYou()">Iya</button>
+        </div>
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='gambar1.jpeg') }}" alt="Gambar 1">
+            <img src="{{ url_for('static', filename='gambar2.jpeg') }}" alt="Gambar 2">
+            <img src="{{ url_for('static', filename='gambar3.jpeg') }}" alt="Gambar 3">
+        </div>
+        <!-- Notifikasi -->
+        <div class="notification" id="notification">
+            Ini special untuk kamu ❤️
+        </div>
+        <!-- Peringatan -->
+        <div class="warning" id="warning">
+            GABOLEH BILANG NGGAA!!
+        </div>
+    </div>
+</body>
+</html>
